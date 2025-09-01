@@ -46,11 +46,27 @@ def decrypt_file(inp="encrypted_text.txt", outp="decrypted_text.txt", shift1=0, 
     with open(outp, "w", encoding="utf-8") as f:
         f.write(dec)
 
-def verify():
-    pass
+#now I add verify and connect in main
 
+def verify(original="raw_text.txt", decrypted="decrypted_text.txt"):
+    with open(original, "r", encoding="utf-8") as f1, open(decrypted, "r", encoding="utf-8") as f2:
+        return f1.read() == f2.read()
+ # simple version (no try/except yet)
 def main():
-    pass
+    shift1 = int(input("Enter shift1: "))
+    shift2 = int(input("Enter shift2: "))
+
+    encrypt_file(shift1=shift1, shift2=shift2)
+    print("Encrypted done")
+
+    decrypt_file(shift1=shift1, shift2=shift2)
+    print("Decrypted done")
+
+    if verify():
+        print("Verify success")
+    else:
+        print("Verify fail")
+
 
 if __name__ == "__main__":
     main()
