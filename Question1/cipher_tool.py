@@ -1,31 +1,50 @@
 
+
+
 ALPHA = 26 # english alphabet size
 
 def _shift_letter(ch, k, base):
     idx = ord(ch) - ord(base)
     return chr(ord(base) + ((idx + k) % ALPHA))
 
-def _transform_char(ch, shift1, shift2, encrypt):
-    if 'a' <= ch <= 'z':
-        if ch <= 'm':  # a-m forward
+
+def _build_maps(shift1, shift2):
+    
+    enc_map = {}
+    # lowercase source alphabet
+    for code in range(ord('a'), ord('z') + 1):
+        c = chr(code)
+        if c <= 'm':  # a–m forward by shift1*shift2
             k = shift1 * shift2
-            k = k if encrypt else -k
-            return _shift_letter(ch, k, 'a')
-        else:  # n-z backward
-            k = shift1 + shift2
-            k = -k if encrypt else k
-            return _shift_letter(ch, k, 'a')
-    elif 'A' <= ch <= 'Z':
-        if ch <= 'M':  # A-M backward
-            k = shift1
-            k = -k if encrypt else k
-            return _shift_letter(ch, k, 'A')
-        else:  # N-Z forward shift2^2
+            enc_map[c] = _shift_letter(c, k, 'a')
+        else:        # n–z backward by (shift1 + shift2)
+            k = -(shift1 + shift2)
+            enc_map[c] = _shift_letter(c, k, 'a')
+    # uppercase source alphabet
+    for code in range(ord('A'), ord('Z') + 1):
+        c = chr(code)
+        if c <= 'M':  # A–M backward by shift1
+            k = -shift1
+            enc_map[c] = _shift_letter(c, k, 'A')
+        else:         # N–Z forward by shift2^2
             k = shift2 * shift2
-            k = k if encrypt else -k
-            return _shift_letter(ch, k, 'A')
-    else:
-        return ch  # there is no changes on space number and symbol heres
+            enc_map[c] = _shift_letter(c, k, 'A')
+    # inverse for decryption
+    dec_map = {v: k for k, v in enc_map.items()}
+    return enc_map, dec_map
+
+def _transform_with_map(text, mapping):
+    return ''.join(mapping.get(ch, ch) for ch in text)
+
+def encrypt_text(plain_text, shift1, shift2):
+    enc_map, _ = _build_maps(shift1, shift2)
+    return _transform_with_map(plain_text, enc_map)
+
+def decrypt_text(cipher_text, shift1, shift2):
+    _, dec_map = _build_maps(shift1, shift2)
+    return _transform_with_map(cipher_text, dec_map)
+
+
     
 #added file read/write for encrypt and decrypt
 
@@ -38,7 +57,8 @@ def encrypt_file(inp="raw_text.txt", outp="encrypted_text.txt", shift1=0, shift2
 
     with open(inp, "r", encoding="utf-8") as f:
         raw = f.read()
-    enc = transform_text(raw, shift1, shift2, True)
+        # Using the reversible map-based encryption 
+    enc = encrypt_text(raw, shift1, shift2)
     with open(outp, "w", encoding="utf-8") as f:
         f.write(enc)
 
@@ -48,16 +68,20 @@ def decrypt_file(inp="encrypted_text.txt", outp="decrypted_text.txt", shift1=0, 
 
     with open(inp, "r", encoding="utf-8") as f:
         enc = f.read()
-    dec = transform_text(enc, shift1, shift2, False)
+        # Using  true inverse mapping for decryption
+    dec = decrypt_text(enc, shift1, shift2)
     with open(outp, "w", encoding="utf-8") as f:
         f.write(dec)
 
 #now I add verify and connect in main
 
+def _normalize_newlines(s):
+    return s.replace("\r\n", "\n").replace("\r", "\n")
+
 def verify(original="raw_text.txt", decrypted="decrypted_text.txt"):
     #  compareing here that  original and decrypted if same or not
     with open(original, "r", encoding="utf-8") as f1, open(decrypted, "r", encoding="utf-8") as f2:
-        return f1.read() == f2.read()
+        return _normalize_newlines(f1.read()) == _normalize_newlines(f2.read())
 
 def main():
                     # first asking the  shift numbers
@@ -78,7 +102,7 @@ def main():
 # it is the decrypt step
     decrypt_file(shift1=shift1, shift2=shift2)
     print("Decrypted -> decrypted_text.txt")
-# it is  the verify step
+# it is  the
     ok = verify()
     if ok:
         print("Verification SUCCESS, file match same")
