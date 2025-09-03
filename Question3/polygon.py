@@ -1,14 +1,14 @@
 import turtle  # using the built-in turtle module
 
 
-# Koch-like step, mirrored to point inward
 def draw_edge(length, depth):
     if depth == 0:
+        # base case, no recursion, draw straight line
         turtle.forward(length)  # move pen forward
     else:
-        part = length / 3
+        part = length / 3  # divide edge into 3 parts
 
-        # first segment
+        # first straight path
         draw_edge(part, depth - 1)
 
         # turn right to push the triangle inward relative to the edge
@@ -24,8 +24,15 @@ def draw_edge(length, depth):
         draw_edge(part, depth - 1)
 
 
-# quick visual check
-draw_edge(200, 1)
+# now try to make a polygon out of these recursive edges
+def draw_polygon(sides, length, depth):
+    angle = 360 / sides  # turning angle at each corner
+    for _ in range(sides):
+        draw_edge(length, depth)  # draw one fractal edge
+        turtle.right(angle)  # rotate to start next side
 
+
+# testing: try a triangle (3 sides)
+draw_polygon(3, 200, 1)
 
 turtle.done()  # keep window open
