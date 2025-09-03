@@ -32,7 +32,12 @@ def draw_polygon(sides, length, depth):
         turtle.right(angle)  # rotate to start next side
 
 
-# testing: try a triangle (3 sides)
-draw_polygon(3, 200, 1)
+# instead of hardcoding, ask the user
+sides = int(input("Enter the number of sides:"))
+length = int(input("Enter the side length:"))
+depth = int(input("Enter the recursion depth:"))
 
-turtle.done()  # keep window open
+# now pass user values into the polygon function
+draw_polygon(sides, length, depth)
+
+turtle.done()  # keep window open until closed by user
