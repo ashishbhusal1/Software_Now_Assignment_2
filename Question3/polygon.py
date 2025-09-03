@@ -37,6 +37,17 @@ sides = int(input("Enter the number of sides:"))
 length = int(input("Enter the side length:"))
 depth = int(input("Enter the recursion depth:"))
 
+# turtle setup for better visuals
+turtle.speed(0)  # fastest drawing
+turtle.hideturtle()  # hide the arrow
+turtle.bgcolor("white")
+turtle.color("black")
+
+# move turtle so drawing appears more centered on screen without this, part of the shape can go off the canvas
+turtle.penup()
+turtle.goto(-length / 2, length / 3)
+turtle.pendown()
+
 # now pass user values into the polygon function
 draw_polygon(sides, length, depth)
 
