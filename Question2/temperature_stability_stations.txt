@@ -1,0 +1,13 @@
+TEMPERATURE STABILITY ANALYSIS
+===================================
+Stations with most stable and variable temperatures
+
+MOST STABLE STATIONS:
+--------------------
+DARWIN-AIRPORT: StdDev 1.2°C
+HORN-ISLAND: StdDev 1.2°C
+
+MOST VARIABLE STATIONS:
+----------------------
+RUTHERGLEN-RESEARCH: StdDev 6.9°C
+WAGGA-WAGGA-AMO: StdDev 6.9°C
