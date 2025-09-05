@@ -1,3 +1,9 @@
+# Group Members:
+# - Ashish Bhusal Student ID: s395452
+# - Nabin Pandey Student ID: s394815
+# - Bashudev Adhikari Student ID: s394439
+
+
 import os
 import pandas as pd
 import glob
@@ -297,7 +303,9 @@ def save_results(seasonal_averages, temperature_ranges, temperature_stability):
 
     # Save temperature ranges (only extreme ranges)
     try:
-        with open("Question2/largest_temp_range_station.txt", "w", encoding="utf-8") as f:
+        with open(
+            "Question2/largest_temp_range_station.txt", "w", encoding="utf-8"
+        ) as f:
             f.write("TEMPERATURE RANGE ANALYSIS\n")
             f.write("=" * 30 + "\n")
             f.write("Stations with extreme temperature ranges\n\n")
@@ -305,13 +313,10 @@ def save_results(seasonal_averages, temperature_ranges, temperature_stability):
             # Get extreme ranges
             extreme_ranges = get_extreme_ranges(temperature_ranges)
 
-            
             for station, data in extreme_ranges["highest"]:
                 f.write(
                     f"{station}: Range {data['range']}°C (Max: {data['max']}°C, Min: {data['min']}°C)\n"
                 )
-
-    
 
         print(f"Temperature ranges saved to 'largest_temp_range_station.txt'")
 
@@ -320,7 +325,9 @@ def save_results(seasonal_averages, temperature_ranges, temperature_stability):
 
     # Save temperature stability
     try:
-        with open("Question2/temperature_stability_stations.txt", "w", encoding="utf-8") as f:
+        with open(
+            "Question2/temperature_stability_stations.txt", "w", encoding="utf-8"
+        ) as f:
             f.write("TEMPERATURE STABILITY ANALYSIS\n")
             f.write("=" * 35 + "\n")
             f.write("Stations with most stable and variable temperatures\n\n")
