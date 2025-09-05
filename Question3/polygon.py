@@ -1,3 +1,8 @@
+# Group Members:
+# - Ashish Bhusal Student ID: s395452
+# - Nabin Pandey Student ID: s394815
+# - Bashudev Adhikari Student ID: s394439
+
 import turtle  # using the built-in turtle module
 
 
